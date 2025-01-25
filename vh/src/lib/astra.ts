@@ -9,17 +9,21 @@ interface AstraConfig {
 const validateAstraConfig = (): AstraConfig => {
   const { endpoint, token } = config.astra;
 
+  
+
   try {
     const fullEndpoint = `https://${endpoint}`;
     new URL(fullEndpoint);
     return { endpoint: fullEndpoint, token };
   } catch (error) {
-    throw new Error(`Invalid Astra DB endpoint: ${endpoint}`);
+    throw new Error(`${error} Invalid Astra DB endpoint: ${endpoint}`);
   }
 };
 
+type Astradb = ReturnType<DataAPIClient['db']>;
+
 let client: DataAPIClient | null = null;
-let dbInstance: any | null = null;
+let dbInstance: Astradb | null = null;
 
 export const getDb = () => {
   if (!client || !dbInstance) {
@@ -42,10 +46,20 @@ export const initializeCollection = async () => {
         metric: "dot_product"
       }
     });
-  } catch (error: any) {
-    if (!error.message.includes('already exists')) {
-      throw new Error(`Collection init failed: ${error.message}`);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      const astraError = error as AstraError;
+      if (astraError.code === 409) { // Handle specific error code
+        // Collection already exists
+      }
     }
   }
 };
+
+interface AstraError extends Error {
+  code?: number;
+  status?: number;
+}
+
+// Then use in catch block:
 

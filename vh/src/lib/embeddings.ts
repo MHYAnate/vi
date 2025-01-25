@@ -1,6 +1,5 @@
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { PineconeStore } from "@langchain/pinecone";
-import { Pinecone } from '@pinecone-database/pinecone';
 import { Document } from '@langchain/core/documents';
 
 if (!process.env.OPENAI_API_KEY) {
