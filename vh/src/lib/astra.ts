@@ -1,18 +1,35 @@
 import { DataAPIClient } from '@datastax/astra-db-ts';
 import { config } from './config';
 
+
 interface AstraConfig {
   endpoint: string;
   token: string;
 }
 
-const validateAstraConfig = (): AstraConfig => {
-  const { endpoint, token } = config.astra;
+// const validateAstraConfig = (): AstraConfig => {
+//   const { endpoint, token } = config.astra;
 
   
 
+//   try {
+//     const fullEndpoint = `https://${endpoint}`;
+//     new URL(fullEndpoint);
+//     return { endpoint: fullEndpoint, token };
+//   } catch (error) {
+//     throw new Error(`${error} Invalid Astra DB endpoint: ${endpoint}`);
+//   }
+// };
+
+const validateAstraConfig = (): AstraConfig => {
+  const { endpoint, token } = config.astra;
+
   try {
-    const fullEndpoint = `https://${endpoint}`;
+    // Add protocol if missing
+    const fullEndpoint = endpoint.startsWith('http') 
+      ? endpoint
+      : `https://${endpoint}`;
+    
     new URL(fullEndpoint);
     return { endpoint: fullEndpoint, token };
   } catch (error) {
