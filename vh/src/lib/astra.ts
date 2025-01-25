@@ -138,7 +138,3 @@ export const initializeCollection = async () => {
   }
 };
 
-console.log('Astra Config:', {
-  endpoint: process.env.NEXT_PUBLIC_ASTRA_DB_ENDPOINT,
-  token: process.env.NEXT_PUBLIC_ASTRA_DB_APPLICATION_TOKEN?.slice(0, 10) + '...'
-});
