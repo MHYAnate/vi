@@ -92,7 +92,54 @@
 //   }
 // };
 
+// import { DataAPIClient } from '@datastax/astra-db-ts';
+// import { config } from './config';
+
+// interface AstraConfig {
+//   endpoint: string;
+//   token: string;
+// }
+
+// const validateAstraConfig = (): AstraConfig => {
+//   const { endpoint, token } = config.astra;
+
+//   if (!endpoint || !token) {
+//     throw new Error('Missing Astra DB configuration');
+//   }
+//   try {
+//     const fullEndpoint = `https://${endpoint}`;
+//     new URL(fullEndpoint);
+//     return { endpoint: fullEndpoint, token };
+//   } catch (error) {
+//     throw new Error(`Invalid Astra DB endpoint: ${endpoint}`);
+//   }
+// };
+
+// const astraConfig = validateAstraConfig();
+// const client = new DataAPIClient(astraConfig.token);
+
+// export const db = client.db(astraConfig.endpoint, {
+//   namespace: "default_keyspace"
+// });
+
+// export const initializeCollection = async () => {
+//   try {
+//     await db.createCollection("sspot1Collection", {
+//       vector: {
+//         dimension: 1024,
+//         metric: "dot_product"
+//       }
+//     });
+//   } catch (error: any) {
+//     if (!error.message.includes('already exists')) {
+//       throw new Error(`Collection init failed: ${error.message}`);
+//     }
+//   }
+// };
+
+
 import { DataAPIClient } from '@datastax/astra-db-ts';
+import { config } from './config';
 
 interface AstraConfig {
   endpoint: string;
@@ -100,12 +147,7 @@ interface AstraConfig {
 }
 
 const validateAstraConfig = (): AstraConfig => {
-  const endpoint = "3b27e26f-9189-4bcf-ba28-6f8ad31526a5-us-east-2.apps.astra.datastax.com";
-  const token = "AstraCS:EEvrbZTXwmHJejApxGijBOeF:cb3d67986d2d79c5929e56b2c58bebe1f4131646a2c4c8b3ebf2689791d9519a";
-
-  if (!endpoint || !token) {
-    throw new Error('Missing Astra DB configuration');
-  }
+  const { endpoint, token } = config.astra;
 
   try {
     const fullEndpoint = `https://${endpoint}`;
@@ -116,12 +158,21 @@ const validateAstraConfig = (): AstraConfig => {
   }
 };
 
-const astraConfig = validateAstraConfig();
-const client = new DataAPIClient(astraConfig.token);
+let client: DataAPIClient | null = null;
+let dbInstance: any | null = null;
 
-export const db = client.db(astraConfig.endpoint, {
-  namespace: "default_keyspace"
-});
+export const getDb = () => {
+  if (!client || !dbInstance) {
+    const astraConfig = validateAstraConfig();
+    client = new DataAPIClient(astraConfig.token);
+    dbInstance = client.db(astraConfig.endpoint, {
+      namespace: "default_keyspace"
+    });
+  }
+  return dbInstance;
+};
+
+export const db = getDb();
 
 export const initializeCollection = async () => {
   try {

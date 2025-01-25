@@ -89,6 +89,7 @@
 
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/astra';
+import { config } from '@/lib/config';
 
 export const POST = async (req: Request) => {
   try {
@@ -99,7 +100,7 @@ export const POST = async (req: Request) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${"jina_b215f331b8e54727b7f41449fb0bacdbZj9-dOyxRkf-jTy6PzncMt2z3EFl"}`
+        'Authorization': `Bearer ${config.jina.apiKey}`
       },
       body: JSON.stringify({
         model: 'jina-clip-v2',
@@ -122,15 +123,15 @@ export const POST = async (req: Request) => {
       includeSimilarity: true
     });
     
-    const documents = await cursor.toArray();
-    const context = documents.map(doc => doc.text).join('\n\n');
+     const documents = await cursor.toArray();
+    const context = documents.map((doc: { text: any; }) => doc.text).join('\n\n');
 
     // Query DeepSeek
     const deepseekResponse = await fetch('https://api.deepseek.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${"sk-231449d09c84496096708d4f971faae1"}`
+        'Authorization': `Bearer ${config.deepseek.apiKey}`
       },
       body: JSON.stringify({
         model: 'deepseek-chat',
@@ -153,7 +154,7 @@ export const POST = async (req: Request) => {
     
     return NextResponse.json({
       answer: result.choices[0].message.content,
-      contextSources: documents.map(doc => ({
+      contextSources: documents.map((doc: { text: string; $similarity: number; }) => ({
         text: doc.text.slice(0, 150) + '...',
         similarity: Math.round(doc.$similarity * 100)
       }))
