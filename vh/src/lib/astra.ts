@@ -1,35 +1,18 @@
 import { DataAPIClient } from '@datastax/astra-db-ts';
 import { config } from './config';
 
-
 interface AstraConfig {
   endpoint: string;
   token: string;
 }
 
-// const validateAstraConfig = (): AstraConfig => {
-//   const { endpoint, token } = config.astra;
-
-  
-
-//   try {
-//     const fullEndpoint = `https://${endpoint}`;
-//     new URL(fullEndpoint);
-//     return { endpoint: fullEndpoint, token };
-//   } catch (error) {
-//     throw new Error(`${error} Invalid Astra DB endpoint: ${endpoint}`);
-//   }
-// };
-
 const validateAstraConfig = (): AstraConfig => {
   const { endpoint, token } = config.astra;
 
+  
+
   try {
-    // Add protocol if missing
-    const fullEndpoint = endpoint.startsWith('http') 
-      ? endpoint
-      : `https://${endpoint}`;
-    
+    const fullEndpoint = `https://${endpoint}`;
     new URL(fullEndpoint);
     return { endpoint: fullEndpoint, token };
   } catch (error) {
@@ -64,13 +47,13 @@ export const initializeCollection = async () => {
       }
     });
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      const astraError = error as AstraError;
-      if (astraError.code === 409) { // Handle specific error code
-        // Collection already exists
-      }
+  if (error instanceof Error) {
+    const astraError = error as AstraError;
+    if (astraError.code === 409) { // Handle specific error code
+      // Collection already exists
     }
   }
+}
 };
 
 interface AstraError extends Error {
