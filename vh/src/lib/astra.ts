@@ -79,7 +79,7 @@ const validateAstraConfig = (): AstraConfig => {
     new URL(fullEndpoint);
     return { endpoint: fullEndpoint, token };
   } catch (error) {
-    throw new Error(`Invalid Astra DB endpoint: ${endpoint}`);
+    throw new Error(error +`Invalid Astra DB endpoint: ${endpoint}`);
   }
 };
 
