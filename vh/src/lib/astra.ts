@@ -318,7 +318,7 @@ import { config } from './config';
 
 const EMBEDDING_DIMENSION = 1024;
 const COLLECTION_NAME = 'sspot1Collection';
-const METRIC: 'cosine' = 'cosine';
+const METRIC = 'cosine' as const;
 
 // Define your document schema extending SomeDoc
 interface VectorSchema extends SomeDoc {

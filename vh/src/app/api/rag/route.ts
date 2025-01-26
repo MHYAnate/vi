@@ -678,6 +678,11 @@ interface JinaEmbeddingResponse {
   data: Array<{ embedding: number[] }>;
 }
 
+interface ContextItem {
+  text: string;
+  similarity: number;
+}
+
 interface DeepSeekResponse {
   choices: Array<{ message: { content: string } }>;
 }
@@ -685,7 +690,7 @@ interface DeepSeekResponse {
 export async function POST(req: Request) {
   try {
     const { question } = await req.json();
-    const { embedding, context } = await processQuery(question);
+    const { context } = await processQuery(question);
     const answer = await generateAnswer(question, context);
     
     return NextResponse.json({
@@ -743,7 +748,7 @@ async function getJinaEmbedding(text: string): Promise<number[]> {
   return data.data[0].embedding;
 }
 
-async function generateAnswer(question: string, context: any[]) {
+async function generateAnswer(question: string, context: ContextItem[]) {
   const response = await fetch(`${config.deepseek.baseUrl}/chat/completions`, {
     method: 'POST',
     headers: {
