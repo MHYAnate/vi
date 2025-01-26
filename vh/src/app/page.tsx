@@ -284,7 +284,7 @@
 // app/page.tsx
 import RagForm from '@/components/RagForm';
 // import { SSPOT1Scraper } from '@/lib/scraper';
-import { astraClient } from '@/lib/astra';
+
 import { loadSampleData } from '@/lib/scraper';
 
 export default async function Home() {
