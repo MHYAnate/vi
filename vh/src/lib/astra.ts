@@ -112,7 +112,7 @@ export const initializeCollection = async () => {
   } catch (error: unknown) {
     if (error instanceof Error && 'code' in error && error.code === 409) {
       // Collection already exists
-      console.log('Collection already exists');
+      console.log(error +'Collection already exists');
     } else {
       console.error('Error initializing collection:', error);
       throw error;
