@@ -42,6 +42,7 @@ export default function RagForm() {
       const data = await res.json();
       setResponse(res.ok ? data : { error: data.error });
     } catch (error) {
+      console.log(error)
       setResponse({ error: 'Failed to connect to server' });
     }
   };

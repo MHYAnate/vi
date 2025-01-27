@@ -2,7 +2,6 @@
 import { NextResponse } from 'next/server';
 import { astraClient } from '@/lib/astra';
 import { config } from '@/lib/config';
-import { SSPOT1Scraper } from '@/lib/scraper';
 
 interface JinaEmbeddingResponse {
   data: Array<{ embedding: number[] }>;
@@ -12,10 +11,15 @@ interface DeepSeekResponse {
   choices: Array<{ message: { content: string } }>;
 }
 
+interface ContextItem {
+  text: string;
+  similarity: number;
+}
+
 export async function POST(req: Request) {
   try {
     const { question } = await req.json();
-    const { embedding, context } = await processQuery(question);
+    const {  context } = await processQuery(question);
     
     const answer = await generateAnswer(question, context);
     return formatSuccessResponse(answer, context);
@@ -65,7 +69,7 @@ async function getJinaEmbedding(text: string): Promise<number[]> {
   return data.data[0].embedding;
 }
 
-async function generateAnswer(question: string, context: any[]) {
+async function generateAnswer(question: string, context: ContextItem[]) {
   const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -94,7 +98,7 @@ async function generateAnswer(question: string, context: any[]) {
   return data.choices[0].message.content;
 }
 
-function formatSuccessResponse(answer: string, context: any[]) {
+function formatSuccessResponse(answer: string, context: ContextItem[]) {
   return NextResponse.json({
     answer,
     context

@@ -3,6 +3,14 @@ import RagForm from '@/components/RagForm';
 import { SSPOT1Scraper } from '@/lib/scraper';
 import { astraClient } from '@/lib/astra';
 
+import {  SomeDoc } from '@datastax/astra-db-ts';
+
+
+interface VectorSchema extends SomeDoc {
+
+  metadata?: Record<string, unknown>;
+}
+
 export default async function Home() {
   await initializeApplication();
   return (
@@ -34,7 +42,7 @@ async function initializeApplication() {
   }
 }
 
-async function storeChunksInAstra(collection: any, chunks: string[]) {
+async function storeChunksInAstra(collection: VectorSchema, chunks: string[]) {
   for (const chunk of chunks) {
     try {
       const embedding = await getJinaEmbedding(chunk);
