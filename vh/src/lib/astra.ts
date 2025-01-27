@@ -100,20 +100,21 @@ class AstraDBClient {
   private collectionCache = new Map<string, Collection<VectorSchema>>();
 
   private constructor() {
-    const { endpoint, token } = config.astra;
+    const endpoint = process.env.ASTRA_DB_ENDPOINT;
+    const token = process.env.ASTRA_DB_APPLICATION_TOKEN;
     
     if (!endpoint || !token) {
-      throw new Error('Missing Astra DB configuration');
+      throw new Error("Missing Astra DB environment variables");
     }
-
+  
     this.client = new DataAPIClient(token);
-    this.db = this.client.db(`https://${endpoint}`, { namespace: 'default_keyspace' });
+    this.db = this.client.db(endpoint, { namespace: 'default_keyspace' });
   }
 
   public static getInstance(): AstraDBClient {
     if (!AstraDBClient.instance) {
       AstraDBClient.instance = new AstraDBClient();
-    }
+    }   
     return AstraDBClient.instance;
   }
 
