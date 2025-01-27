@@ -233,7 +233,6 @@
 
 import { NextResponse } from 'next/server';
 import { astraClient } from '@/lib/astra';
-import { VectorDoc } from '@datastax/astra-db-ts';
 import { config } from '@/lib/config';
 
 interface JinaEmbeddingResponse {

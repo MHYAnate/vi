@@ -119,6 +119,7 @@ class AstraDBClient {
       await this.collection.countDocuments({}, 1); // Verify access
       return this.collection;
     } catch (error) {
+      console.log(error)
       // Create collection if it doesn't exist
       this.collection = await db.createCollection<Document>(COLLECTION_NAME, {
         vector: {
