@@ -233,7 +233,6 @@
 
 import { NextResponse } from 'next/server';
 import { astraClient } from '@/lib/astra';
-import { config } from '@/lib/config';
 
 interface JinaEmbeddingResponse {
   data: Array<{ embedding: number[] }>;
@@ -241,18 +240,22 @@ interface JinaEmbeddingResponse {
 
 interface DeepSeekResponse {
   choices: Array<{ message: { content: string } }>;
+
 }
+
+const jinaPaiKey = process.env.NEXT_PUBLIC_JINA_API_KEY
 
 export async function POST(req: Request) {
   try {
     const { question } = await req.json();
+
     
     // Get embeddings from Jina
     const jinaResponse = await fetch('https://api.jina.ai/v1/embeddings', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${config.jina.apiKey}`
+        'Authorization': `Bearer ${jinaPaiKey}`
       },
       body: JSON.stringify({
         model: 'jina-clip-v2',
@@ -281,11 +284,15 @@ export async function POST(req: Request) {
     }));
 
     // Query DeepSeek
-    const deepseekResponse = await fetch(`${config.deepseek.baseUrl}/chat/completions`, {
+
+    const deepseekKey =process.env.NEXT_PUBLIC_DEEPSEEK_API_KEY
+
+    const deepseekBaseApi = 'https://api.deepseek.com/v1';
+    const deepseekResponse = await fetch(`${deepseekBaseApi}/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${config.deepseek.apiKey}`
+        'Authorization': `Bearer ${deepseekKey}`
       },
       body: JSON.stringify({
         model: 'deepseek-chat',
