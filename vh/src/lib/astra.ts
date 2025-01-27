@@ -1,5 +1,3 @@
-
-
 import { DataAPIClient, Db, Collection, CreateCollectionOptions, SomeDoc } from '@datastax/astra-db-ts';
 import { config } from './config';
 
@@ -7,9 +5,8 @@ const EMBEDDING_DIMENSION = 1024;
 const COLLECTION_NAME = 'sspot1Collection';
 const METRIC = 'cosine' as const;
 
-// Define your document schema extending SomeDoc
+// Define document schema extending SomeDoc
 interface VectorSchema extends SomeDoc {
-  _id?: string;
   text: string;
   embedding: number[];
   metadata?: Record<string, unknown>;
@@ -27,8 +24,8 @@ class AstraDBClient {
   private collectionCache = new Map<string, Collection<VectorSchema>>();
 
   private constructor() {
-    const endpoint = `https://${config.astra.endpoint}`;
-    this.client = new DataAPIClient(config.astra.token);
+    const endpoint = `https://3b27e26f-9189-4bcf-ba28-6f8ad31526a5-us-east-2.apps.astra.datastax.com`;
+    this.client = new DataAPIClient('AstraCS:EEvrbZTXwmHJejApxGijBOeF:cb3d67986d2d79c5929e56b2c58bebe1f4131646a2c4c8b3ebf2689791d9519a');
     this.db = this.client.db(endpoint, { namespace: 'default_keyspace' });
   }
 
@@ -40,14 +37,13 @@ class AstraDBClient {
   }
 
   public async getCollection(): Promise<Collection<VectorSchema>> {
-    const cachedCollection = this.collectionCache.get(COLLECTION_NAME);
-    if (cachedCollection) {
-      return cachedCollection;
+    if (this.collectionCache.has(COLLECTION_NAME)) {
+      return this.collectionCache.get(COLLECTION_NAME)!;
     }
 
     try {
       const collection = this.db.collection<VectorSchema>(COLLECTION_NAME);
-      await collection.countDocuments({}, 1000);
+      await collection.countDocuments({}, 1);
       this.collectionCache.set(COLLECTION_NAME, collection);
       return collection;
     } catch (error) {
@@ -67,8 +63,7 @@ class AstraDBClient {
       vector: {
         dimension: EMBEDDING_DIMENSION,
         metric: METRIC,
-        // // Add path to the vector field in your schema
-        // path: 'embedding'
+        
       }
     };
 

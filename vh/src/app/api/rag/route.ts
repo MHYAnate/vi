@@ -1,15 +1,11 @@
-
+// app/api/rag/route.ts
 import { NextResponse } from 'next/server';
 import { astraClient } from '@/lib/astra';
 import { config } from '@/lib/config';
+import { SSPOT1Scraper } from '@/lib/scraper';
 
 interface JinaEmbeddingResponse {
   data: Array<{ embedding: number[] }>;
-}
-
-interface ContextItem {
-  text: string;
-  similarity: number;
 }
 
 interface DeepSeekResponse {
@@ -19,18 +15,10 @@ interface DeepSeekResponse {
 export async function POST(req: Request) {
   try {
     const { question } = await req.json();
-    const { context } = await processQuery(question);
-    const answer = await generateAnswer(question, context);
+    const { embedding, context } = await processQuery(question);
     
-    return NextResponse.json({
-      answer,
-      contextSources: context
-    }, {
-      headers: { 
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*' 
-      }
-    });
+    const answer = await generateAnswer(question, context);
+    return formatSuccessResponse(answer, context);
     
   } catch (error) {
     return handleError(error);
@@ -77,8 +65,8 @@ async function getJinaEmbedding(text: string): Promise<number[]> {
   return data.data[0].embedding;
 }
 
-async function generateAnswer(question: string, context: ContextItem[]) {
-  const response = await fetch(`${config.deepseek.baseUrl}/chat/completions`, {
+async function generateAnswer(question: string, context: any[]) {
+  const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -93,8 +81,7 @@ async function generateAnswer(question: string, context: ContextItem[]) {
         role: 'user',
         content: question
       }],
-      temperature: 0.7,
-      max_tokens: 500
+      temperature: 0.7
     })
   });
 
@@ -107,18 +94,21 @@ async function generateAnswer(question: string, context: ContextItem[]) {
   return data.choices[0].message.content;
 }
 
+function formatSuccessResponse(answer: string, context: any[]) {
+  return NextResponse.json({
+    answer,
+    context
+  }, {
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+
 function handleError(error: unknown) {
   const message = error instanceof Error ? error.message : 'Unknown error';
   console.error('RAG Error:', message);
   return NextResponse.json(
     { error: message },
-    { 
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*' 
-      }
-    }
+    { status: 500 }
   );
 }
 
