@@ -87,8 +87,11 @@ class AstraDBClient {
   private collection: Collection<Document> | null = null;
 
   private constructor() {
-    const { endpoint, token } = config.astra;
-    
+    // const {  } = config.astra;
+
+    const endpoint = process.env.NEXT_PUBLIC_ASTRA_DB_ENDPOINT
+
+    const token = process.env.NEXT_PUBLIC_ASTRA_DB_APPLICATION_TOKEN
     if (!endpoint || !token) {
       throw new Error('Missing Astra DB configuration');
     }
@@ -108,7 +111,8 @@ class AstraDBClient {
       return this.collection;
     }
 
-    const { endpoint } = config.astra;
+    const endpoint = process.env.NEXT_PUBLIC_ASTRA_DB_ENDPOINT
+    // const { endpoint } = config.astra;
     const db = this.client.db(`https://${endpoint}`, { 
       namespace: 'default_keyspace'
     });
