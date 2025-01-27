@@ -1,81 +1,68 @@
 
 
-import { DataAPIClient, Db, Collection, CreateCollectionOptions, SomeDoc } from '@datastax/astra-db-ts';
+import { DataAPIClient, Collection, VectorDoc } from '@datastax/astra-db-ts';
+
 const EMBEDDING_DIMENSION = 1024;
 const COLLECTION_NAME = 'sspot1Collection';
-const METRIC = 'cosine' as const;
 
-// Define document schema extending SomeDoc
-interface VectorSchema extends SomeDoc {
+// Define document schema with vector support
+interface Document extends VectorDoc {
   text: string;
-  embedding: number[];
   metadata?: Record<string, unknown>;
-}
-
-interface AstraError extends Error {
-  code?: number;
-  status?: number;
 }
 
 class AstraDBClient {
   private static instance: AstraDBClient;
   private client: DataAPIClient;
-  private db: Db;
-  private collectionCache = new Map<string, Collection<VectorSchema>>();
+  private collection: Collection<Document> | null = null;
 
   private constructor() {
-    const endpoint = process.env.ASTRA_DB_ENDPOINT;
     const token = process.env.ASTRA_DB_APPLICATION_TOKEN;
-    
-    if (!endpoint || !token) {
-      throw new Error("Missing Astra DB environment variables");
+    const endpoint = process.env.ASTRA_DB_ENDPOINT;
+
+    if (!token || !endpoint) {
+      throw new Error('Missing Astra DB environment variables');
     }
-  
+
     this.client = new DataAPIClient(token);
-    this.db = this.client.db(endpoint, { namespace: 'default_keyspace' });
   }
 
   public static getInstance(): AstraDBClient {
     if (!AstraDBClient.instance) {
       AstraDBClient.instance = new AstraDBClient();
-    }   
+    }
     return AstraDBClient.instance;
   }
 
-  public async getCollection(): Promise<Collection<VectorSchema>> {
-    if (this.collectionCache.has(COLLECTION_NAME)) {
-      return this.collectionCache.get(COLLECTION_NAME)!;
+  public async getCollection(): Promise<Collection<Document>> {
+    if (this.collection) {
+      return this.collection;
     }
+
+    const endpoint = process.env.ASTRA_DB_ENDPOINT;
+    if (!endpoint) {
+      throw new Error('Missing ASTRA_DB_ENDPOINT environment variable');
+    }
+
+    const db = this.client.db(`https://${endpoint}`, { 
+      namespace: 'default_keyspace'
+    });
 
     try {
-      const collection = this.db.collection<VectorSchema>(COLLECTION_NAME);
-      // Verify collection exists
-      await collection.countDocuments({}, 1);
-      this.collectionCache.set(COLLECTION_NAME, collection);
-      return collection;
+      // Try to get existing collection
+      this.collection = db.collection<Document>(COLLECTION_NAME);
+      await this.collection.countDocuments({}, 1); // Verify access
+      return this.collection;
     } catch (error) {
-      return this.handleCollectionError(error as AstraError);
+      // Create collection if it doesn't exist
+      this.collection = await db.createCollection<Document>(COLLECTION_NAME, {
+        vector: {
+          dimension: EMBEDDING_DIMENSION,
+          metric: 'cosine'
+        }
+      });
+      return this.collection;
     }
-  }
-
-  private async handleCollectionError(error: AstraError): Promise<Collection<VectorSchema>> {
-    if (error.code === 404 || error.status === 404) {
-      return this.createNewCollection();
-    }
-    throw new Error(`AstraDB error: ${error.message}`);
-  }
-
-  private async createNewCollection(): Promise<Collection<VectorSchema>> {
-    const options: CreateCollectionOptions<VectorSchema> = {
-      vector: {
-        dimension: EMBEDDING_DIMENSION,
-        metric: METRIC
-      }
-    };
-
-    const collection = await this.db.createCollection<VectorSchema>(COLLECTION_NAME, options);
-    this.collectionCache.set(COLLECTION_NAME, collection);
-    return collection;
   }
 }
 
