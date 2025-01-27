@@ -128,8 +128,113 @@
 //   });
 // }
 
+// import { NextResponse } from 'next/server';
+// import { astraClient } from '@/lib/astra';
+
+// interface JinaEmbeddingResponse {
+//   data: Array<{ embedding: number[] }>;
+// }
+
+// interface DeepSeekResponse {
+//   choices: Array<{ message: { content: string } }>;
+// }
+
+// export async function POST(req: Request) {
+//   try {
+//     const { question } = await req.json();
+    
+//     // Get embeddings from Jina
+//     const jinaResponse = await fetch('https://api.jina.ai/v1/embeddings', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Authorization': `Bearer ${process.env.JINA_API_KEY}`
+//       },
+//       body: JSON.stringify({
+//         model: 'jina-clip-v2',
+//         input: [question]
+//       })
+//     });
+
+//     if (!jinaResponse.ok) {
+//       throw new Error(`Jina API error: ${jinaResponse.statusText}`);
+//     }
+
+//     const jinaData: JinaEmbeddingResponse = await jinaResponse.json();
+//     const queryVector = jinaData.data[0].embedding;
+
+//     // Query Astra DB
+//     const collection = await astraClient.getCollection();
+//     const cursor = await collection.find({})
+//       .sort({ $vector: queryVector})
+//       .limit(3)
+//       .includeSimilarity(true);
+    
+//     const results = await cursor.toArray();
+//     const context = results.map(doc => ({
+//       text: doc.text.slice(0, 150) + '...',
+//       similarity: Math.round((doc.$similarity || 0) * 100)
+//     }));
+
+//     // Query DeepSeek
+//     const deepseekResponse = await fetch('https://api.deepseek.com/v1/chat/completions', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`
+//       },
+//       body: JSON.stringify({
+//         model: 'deepseek-chat',
+//         messages: [{
+//           role: 'system',
+//           content: `Answer using this context:\n${JSON.stringify(context)}\n\nIf unsure, say you don't know.`
+//         }, {
+//           role: 'user',
+//           content: question
+//         }],
+//         temperature: 0.7
+//       })
+//     });
+
+//     if (!deepseekResponse.ok) {
+//       throw new Error(`DeepSeek API error: ${deepseekResponse.statusText}`);
+//     }
+
+//     const result: DeepSeekResponse = await deepseekResponse.json();
+    
+//     return NextResponse.json({
+//       answer: result.choices[0].message.content,
+//       contextSources: context
+//     }, {
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Access-Control-Allow-Origin': '*'
+//       }
+//     });
+
+//   } catch (error) {
+//     console.error('RAG Error:', error);
+//     return NextResponse.json(
+//       { error: error instanceof Error ? error.message : 'Unknown error' },
+//       { status: 500 }
+//     );
+//   }
+// }
+
+// export function OPTIONS() {
+//   return new NextResponse(null, {
+//     headers: {
+//       'Access-Control-Allow-Origin': '*',
+//       'Access-Control-Allow-Methods': 'POST, OPTIONS',
+//       'Access-Control-Allow-Headers': 'Content-Type'
+//     }
+//   });
+// }
+
 import { NextResponse } from 'next/server';
 import { astraClient } from '@/lib/astra';
+import { VectorDoc } from '@datastax/astra-db-ts';
+import { config } from '@/lib/config';
 
 interface JinaEmbeddingResponse {
   data: Array<{ embedding: number[] }>;
@@ -148,7 +253,7 @@ export async function POST(req: Request) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.JINA_API_KEY}`
+        'Authorization': `Bearer ${config.jina.apiKey}`
       },
       body: JSON.stringify({
         model: 'jina-clip-v2',
@@ -166,7 +271,7 @@ export async function POST(req: Request) {
     // Query Astra DB
     const collection = await astraClient.getCollection();
     const cursor = await collection.find({})
-      .sort({ $vector: queryVector})
+      .sort({ $vector: queryVector })
       .limit(3)
       .includeSimilarity(true);
     
@@ -177,11 +282,11 @@ export async function POST(req: Request) {
     }));
 
     // Query DeepSeek
-    const deepseekResponse = await fetch('https://api.deepseek.com/v1/chat/completions', {
+    const deepseekResponse = await fetch(`${config.deepseek.baseUrl}/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`
+        'Authorization': `Bearer ${config.deepseek.apiKey}`
       },
       body: JSON.stringify({
         model: 'deepseek-chat',
