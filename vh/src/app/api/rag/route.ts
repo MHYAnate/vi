@@ -130,7 +130,6 @@
 
 import { NextResponse } from 'next/server';
 import { astraClient } from '@/lib/astra';
-import { VectorDoc } from '@datastax/astra-db-ts';
 
 interface JinaEmbeddingResponse {
   data: Array<{ embedding: number[] }>;

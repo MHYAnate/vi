@@ -55,6 +55,7 @@ class AstraDBClient {
       return this.collection;
     } catch (error) {
       // Create collection if it doesn't exist
+      console.log(error)
       this.collection = await db.createCollection<Document>(COLLECTION_NAME, {
         vector: {
           dimension: EMBEDDING_DIMENSION,
