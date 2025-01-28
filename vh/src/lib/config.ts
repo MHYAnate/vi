@@ -97,6 +97,8 @@
 //   }
 // };
 
+// fix
+
 interface AppConfig {
   astra: {
     endpoint: string;
