@@ -23,9 +23,11 @@ class AstraDBClient {
   private db: Db;
   private collectionCache = new Map<string, Collection<VectorSchema>>();
 
+  
   private constructor() {
-    const endpoint = `${config.astra.endpoint}`;
-    this.client = new DataAPIClient(config.astra.token);
+    const endpoint = `${process.env.NEXT_PUBLIC_ASTRA_DB_ENDPOINT
+    }`;
+    this.client = new DataAPIClient(process.env.NEXT_PUBLIC_ASTRA_DB_APPLICATION_TOKEN);
     this.db = this.client.db(endpoint, { namespace: 'default_keyspace' });
   }
 

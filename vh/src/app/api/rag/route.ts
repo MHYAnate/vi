@@ -48,12 +48,14 @@ async function processQuery(question: string) {
   return { embedding, context };
 }
 
+const jinKey = process.env.NEXT_PUBLIC_JINA_API_KEY
+
 async function getJinaEmbedding(text: string): Promise<number[]> {
   const response = await fetch('https://api.jina.ai/v1/embeddings', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${config.jina.apiKey}`
+      'Authorization': `Bearer ${jinKey}`
     },
     body: JSON.stringify({
       model: 'jina-clip-v2',
@@ -70,12 +72,14 @@ async function getJinaEmbedding(text: string): Promise<number[]> {
   return data.data[0].embedding;
 }
 
+const deepKey = process.env.NEXT_PUBLIC_DEEPSEEK_API_KEY
+
 async function generateAnswer(question: string, context: ContextItem[]) {
   const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${config.deepseek.apiKey}`
+      'Authorization': `Bearer ${deepKey}`
     },
     body: JSON.stringify({
       model: 'deepseek-chat',
