@@ -1,5 +1,4 @@
 import { DataAPIClient, Db, Collection, CreateCollectionOptions, SomeDoc } from '@datastax/astra-db-ts';
-import { config } from './config';
 
 const EMBEDDING_DIMENSION = 1024;
 const COLLECTION_NAME = 'sspot1_collection';

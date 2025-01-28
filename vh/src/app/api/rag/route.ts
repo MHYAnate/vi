@@ -1,7 +1,6 @@
 // app/api/rag/route.ts
 import { NextResponse } from 'next/server';
 import { astraClient } from '@/lib/astra';
-import { config } from '@/lib/config';
 
 
 interface JinaEmbeddingResponse {
