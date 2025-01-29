@@ -16,10 +16,10 @@ export default async function Home() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <header className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            SSPOT1 Knowledge Base
+          Sspot1  Q&A A.I
           </h1>
           <p className="text-xl text-gray-600">
-            Real-time API Documentation Assistant
+            Real-time  Assistant
           </p>
         </header>
         <RagForm />
