@@ -1,15 +1,13 @@
 // app/page.tsx
 import RagForm from '@/components/RagForm';
-import { SSPOT1Scraper } from '@/lib/scraper';
-import { astraClient } from '@/lib/astra';
 
-import {  SomeDoc } from '@datastax/astra-db-ts';
+// import {  SomeDoc } from '@datastax/astra-db-ts';
 
 
-interface VectorSchema extends SomeDoc {
+// interface VectorSchema extends SomeDoc {
 
-  metadata?: Record<string, unknown>;
-}
+//   metadata?: Record<string, unknown>;
+// }
 
 export default async function Home() {
   // await initializeApplication();

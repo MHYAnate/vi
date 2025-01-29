@@ -47,7 +47,7 @@ async function processQuery(question: string) {
   return { embedding, context };
 }
 
-const jinKey = process.env.NEXT_PUBLIC_JINA_API_KEY
+
 
 async function getJinaEmbedding(text: string): Promise<number[]> {
   const response = await fetch('https://api.jina.ai/v1/embeddings', {
