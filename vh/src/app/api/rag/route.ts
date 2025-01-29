@@ -54,7 +54,7 @@ async function getJinaEmbedding(text: string): Promise<number[]> {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${jinKey}`
+      'Authorization': `Bearer ${"jina_b215f331b8e54727b7f41449fb0bacdbZj9-dOyxRkf-jTy6PzncMt2z3EFl"}`
     },
     body: JSON.stringify({
       model: 'jina-clip-v2',

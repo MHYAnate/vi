@@ -1,7 +1,7 @@
 import { DataAPIClient, Db, Collection, CreateCollectionOptions, SomeDoc } from '@datastax/astra-db-ts';
 
 const EMBEDDING_DIMENSION = 1024;
-const COLLECTION_NAME = 'sspot1_collection';
+const COLLECTION_NAME = 'sspot1Collection';
 const METRIC = 'cosine' as const;
 
 // Define document schema extending SomeDoc
