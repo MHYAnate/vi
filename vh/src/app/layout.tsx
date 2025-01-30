@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import localFont from "next/font/local";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,6 +18,12 @@ export const metadata: Metadata = {
   description: "service spot 1 quick question artificial intelligence ",
 };
 
+const ProtestGuerrilla = localFont({
+  src: "./fonts/ProtestGuerrilla-Regular.ttf",
+  variable: "--ProtestGuerrilla",
+  weight: "100 900",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -25,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${ProtestGuerrilla.variable} antialiased`}
       >
         {children}
       </body>
