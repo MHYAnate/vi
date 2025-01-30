@@ -19,6 +19,13 @@ interface ContextItem {
   similarity: number;
 }
 
+
+const IconSparkles = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6 mr-2 text-yellow-500">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+  </svg>
+);
+
 export default function RagForm() {
   const [response, setResponse] = useState<{
     answer?: string;
@@ -61,6 +68,7 @@ export default function RagForm() {
   return (
     <div className="flex flex-col h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       <header className="bg-white dark:bg-gray-800 shadow-lg p-6 text-center">
+      <IconSparkles />
         <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 mb-2">
           Sspot1 Q&A AI
         </h1>
