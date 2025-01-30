@@ -90,7 +90,7 @@ export default function RagForm() {
                 className={`w-full p-3 pr-12 border rounded-xl focus:ring-2 focus:ring-purple-400 dark:focus:ring-pink-400 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white resize-none ${
                   formState.errors.query ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                 }`}
-                placeholder="Ask about SSPOT1..."
+                placeholder="Ask about SsPOT1..."
                 rows={1}
                 disabled={formState.isSubmitting}
               />
