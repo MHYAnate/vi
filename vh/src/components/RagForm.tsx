@@ -20,8 +20,6 @@ interface ContextItem {
 	similarity: number;
 }
 
-
-
 export default function RagForm() {
 	const [response, setResponse] = useState<{
 		answer?: string;
@@ -72,13 +70,15 @@ export default function RagForm() {
 	return (
 		<div className="flex flex-col h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
 			<header className="bg-white dark:bg-gray-800 shadow-lg p-6 text-center">
-				<Image
-					src={"/ai.jpg"}
-					alt={` image`}
-					width={400}
-					height={300}
-					className="object-cover transition-transform duration-300 hover:scale-105"
-				/>
+				<div className={`relative w-10 h-10 overflow-hidden rounded-full`}>
+					<Image
+						src={"/ai.jpg"}
+						alt="VSHub Logo"
+						layout="fill"
+						objectFit="cover"
+						className="transition-transform duration-300 hover:scale-110"
+					/>
+				</div>
 
 				<h1 className="text-4xl font-bold font-[family-name:var(--ProtestGuerrilla)] text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 mb-2">
 					Sspot1 Q&A AI
