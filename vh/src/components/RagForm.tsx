@@ -77,7 +77,7 @@ export default function RagForm() {
 					alt={` image`}
 					width={400}
 					height={300}
-					className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
+					className="object-cover transition-transform duration-300 hover:scale-105"
 				/>
 
 				<h1 className="text-4xl font-bold font-[family-name:var(--ProtestGuerrilla)] text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 mb-2">
