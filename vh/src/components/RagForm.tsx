@@ -69,7 +69,7 @@ export default function RagForm() {
 
 	return (
 		<div className="flex flex-col h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-			<header className="bg-white dark:bg-gray-800 shadow-lg p-6 text-center">
+			<header className="bg-white flex items-center justify-start gap-5 shadow-lg p-6 text-center">
 				<div className={`relative w-10 h-10 overflow-hidden rounded-full`}>
 					<Image
 						src={"/ai.jpg"}
