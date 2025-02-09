@@ -24,8 +24,7 @@ class AstraDBClient {
 
   
   private constructor() {
-    const endpoint = `https://${process.env.ASTRA_DB_ENDPOINT
-    }`;
+    const endpoint = `https://3b27e26f-9189-4bcf-ba28-6f8ad31526a5-us-east-2.apps.astra.datastax.com`;
     
     this.client = new DataAPIClient(process.env.ASTRA_DB_APPLICATION_TOKEN);
     this.db = this.client.db(endpoint, { namespace: 'default_keyspace' });
