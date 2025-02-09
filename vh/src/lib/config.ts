@@ -13,10 +13,10 @@
 // }
 
 // const REQUIRED_ENV_VARS = [
-//   'NEXT_PUBLIC_ASTRA_DB_ENDPOINT',
-//   'NEXT_PUBLIC_ASTRA_DB_APPLICATION_TOKEN',
-//   'NEXT_PUBLIC_JINA_API_KEY',
-//   'NEXT_PUBLIC_DEEPSEEK_API_KEY'
+//   'ASTRA_DB_ENDPOINT',
+//   'ASTRA_DB_APPLICATION_TOKEN',
+//   'JINA_API_KEY',
+//   'DEEPSEEK_API_KEY'
 // ] as const;
 
 // type EnvVar = typeof REQUIRED_ENV_VARS[number];
@@ -31,14 +31,14 @@
 
 // export const config: AppConfig = {
 //   astra: {
-//     endpoint: getEnvVar('NEXT_PUBLIC_ASTRA_DB_ENDPOINT'),
-//     token: getEnvVar('NEXT_PUBLIC_ASTRA_DB_APPLICATION_TOKEN')
+//     endpoint: getEnvVar('ASTRA_DB_ENDPOINT'),
+//     token: getEnvVar('ASTRA_DB_APPLICATION_TOKEN')
 //   },
 //   jina: {
-//     apiKey: getEnvVar('NEXT_PUBLIC_JINA_API_KEY')
+//     apiKey: getEnvVar('JINA_API_KEY')
 //   },
 //   deepseek: {
-//     apiKey: getEnvVar('NEXT_PUBLIC_DEEPSEEK_API_KEY')
+//     apiKey: getEnvVar('DEEPSEEK_API_KEY')
 //   }
 // };
 
@@ -56,10 +56,10 @@ interface AppConfig {
 }
 
 const REQUIRED_ENV_VARS = [
-  'NEXT_PUBLIC_ASTRA_DB_ENDPOINT',
-  'NEXT_PUBLIC_ASTRA_DB_APPLICATION_TOKEN',
-  'NEXT_PUBLIC_JINA_API_KEY',
-  'NEXT_PUBLIC_DEEPSEEK_API_KEY'
+  'ASTRA_DB_ENDPOINT',
+  'ASTRA_DB_APPLICATION_TOKEN',
+  'JINA_API_KEY',
+  'DEEPSEEK_API_KEY'
 ] as const;
 
 type EnvVar = typeof REQUIRED_ENV_VARS[number];
@@ -86,13 +86,13 @@ validateEnvVars();
 
 export const config: AppConfig = {
   astra: {
-    endpoint: getEnvVar('NEXT_PUBLIC_ASTRA_DB_ENDPOINT'),
-    token: getEnvVar('NEXT_PUBLIC_ASTRA_DB_APPLICATION_TOKEN')
+    endpoint: getEnvVar('ASTRA_DB_ENDPOINT'),
+    token: getEnvVar('ASTRA_DB_APPLICATION_TOKEN')
   },
   jina: {
-    apiKey: getEnvVar('NEXT_PUBLIC_JINA_API_KEY')
+    apiKey: getEnvVar('JINA_API_KEY')
   },
   deepseek: {
-    apiKey: getEnvVar('NEXT_PUBLIC_DEEPSEEK_API_KEY')
+    apiKey: getEnvVar('DEEPSEEK_API_KEY')
   }
 };
