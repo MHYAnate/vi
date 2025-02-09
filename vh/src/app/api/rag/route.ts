@@ -71,7 +71,7 @@ async function getJinaEmbedding(text: string): Promise<number[]> {
   return data.data[0].embedding;
 }
 
-const deepKey = process.env.NEXT_PUBLIC_DEEPSEEK_API_KEY
+const deepKey = `sk-2f13580d022e443990ec46645a1f9945`;
 
 async function generateAnswer(question: string, context: ContextItem[]) {
   const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
