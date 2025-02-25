@@ -1,31 +1,49 @@
 // app/page.tsx
-import RagForm from '@/components/RagForm';
+"use client";
+import { useState, useRef, useEffect } from "react";
+import RagForm from "@/components/RagForm";
+import FeaturesComponent from "@/components/features";
+import FooterComponent from "@/components/footer";
 
-// import {  SomeDoc } from '@datastax/astra-db-ts';
+export default  function Home() {
 
+// export default async function Home() {
+	// await initializeApplication();
 
-// interface VectorSchema extends SomeDoc {
+  	const [qNav, setQNav] = useState("");
 
-//   metadata?: Record<string, unknown>;
-// }
+	const q1 = useRef<HTMLDivElement>(null);
+  const q2 = useRef<HTMLDivElement>(null);
 
-export default async function Home() {
-  // await initializeApplication();
-  return (
-    <main>
-      
-       
-        <RagForm />
-     
-    </main>
-  );
+  const qView1 = () => q1.current?.scrollIntoView({ behavior: "smooth" });
+
+  const qView2 = () => q2.current?.scrollIntoView({ behavior: "smooth" });
+
+  useEffect(() => {
+		if (qNav === "features") {
+			qView1();
+		}
+    if (qNav === "header") {
+			qView2();
+		}
+	}, [qNav, setQNav]);
+
+	return (
+		<main ref={q2} className="flex flex-col">
+			<RagForm setQNav={setQNav} qNav={qNav} />
+      <div ref={q1}>
+      <FeaturesComponent />
+      </div>
+			<FooterComponent setQNav={setQNav} qNav={qNav} />
+		</main>
+	);
 }
 
 // async function initializeApplication() {
 //   try {
 //     const scraper = new SSPOT1Scraper();
 //     const { chunks } = await scraper.scrapeFreshData();
-    
+
 //     const collection = await astraClient.getCollection();
 //     await storeChunksInAstra(collection, chunks);
 //   } catch (error) {

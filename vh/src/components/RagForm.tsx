@@ -20,7 +20,12 @@ interface ContextItem {
 	similarity: number;
 }
 
-export default function RagForm() {
+interface Props {
+	setQNav: (value: string) => void;
+	qNav: string;
+}
+
+export default function RagForm({ setQNav, qNav }: Props) {
 	const [response, setResponse] = useState<{
 		answer?: string;
 		error?: string;
@@ -69,7 +74,7 @@ export default function RagForm() {
 
 	return (
 		<div className="flex flex-col h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-			<header className="bg-white flex items-center justify-start gap-5 shadow-lg p-6 text-center">
+			<header className="bg-white flex items-center justify-between gap-5 shadow-lg p-6 text-center">
 				<div className={`relative w-10 h-10 overflow-hidden rounded-full`}>
 					<Image
 						src={"/ai.jpg"}
@@ -80,9 +85,14 @@ export default function RagForm() {
 					/>
 				</div>
 
-				<h1 className="text-4xl font-bold font-[family-name:var(--ProtestGuerrilla)] text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 mb-2">
-					Sspot1 Q&A AI
-				</h1>
+				<h1 className="cursor-pointer text-4xl font-bold font-[family-name:var(--ProtestGuerrilla)] text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 mb-2 hover:bg-gradient-to-r hover:from-pink-600 hover:to-purple-400 transition-all duration-300 hover:animate-[fadeInUp_1s_ease-in-out_forwards]">
+        Sspot1 Q&A AI
+      </h1>
+
+				<div onClick={()=>setQNav(qNav!=="features"? "features":"")} className="cursor-pointer text-xl text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 mb-2 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-600 hover:to-purple-400  transition-colors duration-300 relative group">
+					FEATURES
+					<span className="absolute left-0 bottom-0 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-600 transition-all duration-300 group-hover:w-full"></span>
+				</div>
 			</header>
 
 			<div className="flex-1 overflow-hidden flex flex-col">
@@ -108,7 +118,7 @@ export default function RagForm() {
 							</div>
 						</div>
 					))}
-					<div ref={chatEndRef} />
+					<div ref={chatEndRef} className="tranform translate-y-[-120px]" />
 				</div>
 
 				<div className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
@@ -178,6 +188,7 @@ export default function RagForm() {
 					</form>
 				</div>
 			</div>
+			<div></div>
 
 			{response && response.context && response.context.length > 0 && (
 				<div className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 transition-all duration-300 ease-in-out">
@@ -206,6 +217,24 @@ export default function RagForm() {
 					</div>
 				</div>
 			)}
+			    <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .feature-card {
+          opacity: 0;
+        }
+        .feature-visible {
+          animation: fadeInUp 0.5s ease-out forwards;
+        }
+      `}</style>
 		</div>
 	);
 }
