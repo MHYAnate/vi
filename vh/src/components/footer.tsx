@@ -30,7 +30,7 @@ const FooterComponent: React.FC<Props> = ({setQNav, qNav}) => {
 							/>
 						</div>
 						<span className="cursor-pointer text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 font-[family-name:var(--ProtestGuerrilla)] relative">
-            {`Sspot1 Q&A AI`}
+            {` Sspot1 Analytic`}
 							<span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-pink-600 to-purple-400 transition-all duration-300 group-hover:w-full"></span>
 						</span>
 					</div>
