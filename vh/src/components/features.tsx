@@ -80,7 +80,7 @@ const FeaturesComponent: React.FC = () => {
       <h2 className="cursor-pointer text-4xl font-bold text-center mb-16 text-black relative inline-block left-1/2 transform -translate-x-1/2 group">
         Whats under The Hood of
         <span className="font-[family-name:var(--ProtestGuerrilla)] text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-        {` Sspot1 Q&A AI`}
+        {` Sspot1 Analytic`}
         </span>
         <span className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-pink-600 to-purple-400 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
       </h2>
