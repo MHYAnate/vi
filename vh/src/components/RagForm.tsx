@@ -86,7 +86,7 @@ export default function RagForm({ setQNav, qNav }: Props) {
 				</div>
 
 				<h1 className="cursor-pointer text-4xl font-bold font-[family-name:var(--ProtestGuerrilla)] text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 mb-2 hover:bg-gradient-to-r hover:from-pink-600 hover:to-purple-400 transition-all duration-300 hover:animate-[fadeInUp_1s_ease-in-out_forwards]">
-        Sspot1 Q&A AI
+        Sspot1 Analytic
       </h1>
 
 				<div onClick={()=>setQNav(qNav!=="features"? "features":"")} className="cursor-pointer text-xl text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 mb-2 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-600 hover:to-purple-400  transition-colors duration-300 relative group">

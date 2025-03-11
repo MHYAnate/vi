@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sspot1 qq ai",
+  title: " Sspot1 Analytic",
   description: "service spot 1 quick question artificial intelligence ",
 };
 
