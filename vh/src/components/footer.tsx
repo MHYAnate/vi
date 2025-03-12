@@ -38,7 +38,7 @@ const FooterComponent: React.FC<Props> = ({setQNav, qNav}) => {
 					<p className="text-sm text-gray-500">
 						© {currentYear}{" "}
 						<span className="font-[family-name:var(--ProtestGuerrilla)] text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-						{`Sspot1 Q&A AI`}
+						{`Sspot1 Analytic`}
 						</span>{" "}
 						by ILUD. All rights reserved.
 					</p>

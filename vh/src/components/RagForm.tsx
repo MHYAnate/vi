@@ -131,7 +131,7 @@ export default function RagForm({ setQNav, qNav }: Props) {
 										? "border-red-500"
 										: "border-gray-300 dark:border-gray-600"
 								}`}
-								placeholder="Ask about SsPOT1..."
+								placeholder="Ask about Sspot1..."
 								rows={1}
 								disabled={formState.isSubmitting}
 							/>
